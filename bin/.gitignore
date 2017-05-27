@@ -1,4 +1,5 @@
-/model/
-/controller/
 /view/
-/Sistema/
+/LICENSE
+/gulpfile.js
+/index.html
+/package.json
