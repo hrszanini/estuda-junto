@@ -16,10 +16,9 @@ public class Agenda {
 	}
 	
 	public void delEvento(Evento evento){
-		for(Evento e: eventos){
+		for(Evento e: eventos)
 			if(e.getId() == evento.getId())
 				eventos.remove(e);
-		}
 	}
 	
 	public void altEvento(Evento evento){
