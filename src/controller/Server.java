@@ -1,11 +1,9 @@
 package controller;
-
-import model.Sistema;
 import spark.Spark;
 
 public class Server {
 	
-	final static Sistema sistema = new Sistema();
+	final static Model model = new Model();
 	
 	private static void main(String[] args){
 		

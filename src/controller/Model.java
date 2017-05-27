@@ -1,16 +1,18 @@
-package model;
+package controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sistema {
-	
+import model.*;
+
+public class Model {
 	private List<Grupo> grupos;
 	private List<Usuario> usuarios;
 	
-	public Sistema(){
+	public Model(){
 		this.grupos = new ArrayList<Grupo>();
 		this.usuarios = new ArrayList<Usuario>();
+		
 	};
 	
 	public void addGrupo(Grupo grupo){
@@ -32,5 +34,6 @@ public class Sistema {
 			if(u.getId() == usuario.getId())
 				grupos.remove(u);
 	}
+	
 
 }

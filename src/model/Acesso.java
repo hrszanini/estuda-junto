@@ -7,7 +7,7 @@ public abstract class Acesso {
 	private Inventario inventario;
 	private String descricao;
 	private Agenda agenda;
-	private Localidade localidade;
+	private String localidade;
 	
 	public Acesso(){}
 
@@ -51,11 +51,11 @@ public abstract class Acesso {
 		this.agenda = agenda;
 	}
 
-	public Localidade getLocalidade() {
+	public String getLocalidade() {
 		return localidade;
 	}
 
-	public void setLocalidade(Localidade localidade) {
+	public void setLocalidade(String localidade) {
 		this.localidade = localidade;
 	}
 
