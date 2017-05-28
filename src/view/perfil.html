@@ -9,29 +9,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script type="text/javascript" src="sliding.form.js"></script>
-    <script>
-        $(document).ready(function(){
-                $('contactForm').submit(function(e){
-                    e.preventDefault();
-                    
-                    var email = $('#e-mail').val().trim();
-                    var senha = $('#password').val().trim();
-                    
-                    $.post("/usuario/add", JSON.stringify({
-                            'email': email,
-                            'senha':senha
-                        }),
-                        function(data){ 
-                            if(data[0].status == 1){
-                                alert("Foi");
-                            }
-                            else
-                                alert("Erro");
-                        },
-                        "json");
-                });
-            });
-    </script>
 
     <title>Title</title>
 
@@ -100,53 +77,21 @@
     <!-- Header -->
     <header>
      <!--INÍCIO DA SECTION DO GRUPO-->
-     <section class="no-padding" id="portfolio">
+     <section class="no-padding" id="portfolio" align="left">
      <!--BLOCO DE GRUPO-->
         <div class="container-fluid">
             <div class="row no-gutter popup-gallery">
-                <div class="col-lg-4 col-sm-6">
+                <div>
                     <a href="grupo.html" class="portfolio-box">
-                        <img src="img/profile.png" class="img-circle" alt="">
-                        <div class="portfolio-box-caption">
-                            <div class="portfolio-box-caption-content">
-                                <div class="project-category text-faded">
-                                    Grupo 1
-                                </div>
-                            </div>
+
+                        <img src="img/profile.png" class="img-circle" alt="" align="left"> <div align="left" margin="10px"><br><label id=nome>Nome</label>
+                        <br><label id=nome>descrição</label></div>
+
+                                
+                        </div>
                         </div>
                     </a>
                 </div><!-- FIM DE UM BLOCO-->
-                <div class="col-lg-4 col-sm-6">
-                    <a href="grupo.html" class="portfolio-box">
-                        <img src="img/profile.png" class="img-circle" alt="">
-                        <div class="portfolio-box-caption">
-                            <div class="portfolio-box-caption-content">
-                                <div class="project-category text-faded">
-                                    Grupo 2
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <a href="grupo.html" class="portfolio-box">
-                        <img src="img/profile.png" class="img-circle" alt="">
-                        <div class="portfolio-box-caption">
-                            <div class="portfolio-box-caption-content">
-                                <div class="project-category text-faded">
-                                    Grupo 3
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                
-            </div>
-        </div>
-    </section><!-- FIM DA SECTION-->
-
-    </div>
-    </div>
 
 
     </header>
