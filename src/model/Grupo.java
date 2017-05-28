@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grupo extends Acesso{
-	private List<Usuario> usuarios;
+	private List<Integer> usuarios;
 	
 	public Grupo(){
-		this.usuarios = new ArrayList<Usuario>();
+		this.usuarios = new ArrayList<Integer>();
 	}
 	public void addUsuario(Usuario usuario){
-		usuarios.add(usuario);
+		usuarios.add(usuario.getId());
 	}
 	
 	public void delUsuario(Usuario usuario){
-		for(Usuario u: usuarios)
-			if(u.getId() == usuario.getId())
+		for(Integer u: usuarios)
+			if(u == usuario.getId())
 				usuarios.remove(u);
 	}
 
-	public List<Usuario> getUsuarios() {
+	public List<Integer> getUsuarios() {
 		return usuarios;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
+	public void setUsuarios(List<Integer> usuarios) {
 		this.usuarios = usuarios;
 	}
 	

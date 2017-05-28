@@ -9,7 +9,7 @@ public class MainServer {
 	static Model model = new Model();
 
     public static void main(String[] args) throws SQLException {
-
+    	
         ProcessBuilder process = new ProcessBuilder();
         Integer port;
         

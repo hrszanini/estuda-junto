@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import model.*;
@@ -33,6 +34,62 @@ public class DAO {
 		this.port = port;
 	}
 	
+	public void resetTables() throws SQLException{
+		dropTables();
+		createTables();
+	}
+	
+	public void dropTables() throws SQLException{
+		execute("DROP TABLE GRUPO_USUARIO");
+		execute("DROP TABLE USUARIO");
+		execute("DROP TABLE ARQUIVO");
+		execute("DROP TABLE EVENTO");
+		execute("DROP TABLE CLIENTE");
+	}
+	
+	public void createTables(){
+		execute("CREATE TABLE CLIENTE("
+				+"CLI_ID NUMBER,"
+				+"CLI_NOME VARCHAR2(255),"
+				+"CLI_DESCRICAO VARCHAR2(255),"
+				+"CLI_LOCALIDADE VARCHAR2(255),"
+				+"CLI_TIPO VARCHAR(255),"
+				+"PRIMARY KEY(CLI_ID))"
+		);
+		execute("CREATE TABLE USUARIO("
+				+"CLI_ID NUMBER,"
+				+"USU_EMAIL VARCHAR(255),"
+				+"USU_SENHA VARCHAR(255),"
+				+"PRIMARY KEY (CLI_ID),"
+				+"FOREIGN KEY(CLI_ID) REFERENCES CLIENTE(CLI_ID))"
+		);
+		execute("CREATE TABLE EVENTO("
+				+"EVE_ID NUMBER,"
+				+"CLI_ID NUMBER,"
+				+"EVE_NOME VARCHAR(255),"
+				+"EVE_DESCRICAO VARCHAR(255),"
+				+"EVE_DATA DATE,"
+				+"EVE_ALERTA DATE,"
+				+"PRIMARY KEY(EVE_ID),"
+				+"FOREIGN KEY(CLI_ID) REFERENCES CLIENTE(CLI_ID))"
+		);
+		execute("CREATE TABLE ARQUIVO("
+				+"ARQ_ID NUMBER,"
+				+"CLI_ID NUMBER,"
+				+"ARQ_NOME VARCHAR2(255),"
+				+"ARQ_PATH VARCHAR2(255),"
+				+"PRIMARY KEY(ARQ_ID),"
+				+"FOREIGN KEY(CLI_ID) REFERENCES CLIENTE(CLI_ID))"
+		);
+		execute("CREATE TABLE GRUPO_USUARIO("
+				+"CLI_ID_GRUPO NUMBER,"
+				+"CLI_ID_USUARIO NUMBER,"
+				+"PRIMARY KEY(CLI_ID_GRUPO,CLI_ID_USUARIO),"
+				+"FOREIGN KEY(CLI_ID_GRUPO) REFERENCES CLIENTE(CLI_ID),"
+				+"FOREIGN KEY(CLI_ID_USUARIO) REFERENCES CLIENTE(CLI_ID))"		
+		);
+	}
+	
 	public boolean connect(){
 		boolean resp = false;
 		
@@ -43,13 +100,13 @@ public class DAO {
 			System.out.println("Conectado");
 			resp = true;
 		}catch(ClassNotFoundException e){
-			System.out.println(e+"\nconnect");
+			System.out.println(e+"\nConnect");
 		}catch(SQLException e){
-			System.out.println(e+"\nconnect");
+			System.out.println(e+"\nConnect");
 		}catch(InstantiationException e){
-			System.out.println(e+"\nconnect");
+			System.out.println(e+"\nConnect");
 		} catch (IllegalAccessException e) {
-			System.out.println(e+"\nconnect");
+			System.out.println(e+"\nConnect");
 		}
 		return resp;
 	}
@@ -57,11 +114,12 @@ public class DAO {
 	public boolean disconnect(){
 		boolean resp = false;
 		
-		String url = "jbdc:oracle:thin:@"+this.host+":"+port+":xe";
+		String url = "jdbc:oracle:thin:@"+this.host+":"+port+":xe";
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
 			this.c = DriverManager.getConnection(url,this.user,this.password);
 			this.c.close();
+			System.out.println("Desconectado");
 			resp = true;
 		}catch(ClassNotFoundException e){
 			e.printStackTrace();
@@ -75,165 +133,200 @@ public class DAO {
 		return resp;
 	}
 	
-	public ResultSet execute(String query) throws SQLException{
+	public ResultSet execute(String query){
+		System.out.println("Execute: "+query);
 		Statement st = null;
-		ResultSet rs = null;
+		ResultSet result = null;
 		
 		try{
 			st = this.c.createStatement();
-			rs = st.executeQuery(query);
-			return rs;
+			result = st.executeQuery(query);
+			return result;
 		}catch(SQLException e){
-			e.printStackTrace();
-		}finally{
-			rs.close();
-			st.close();
+//			e.printStackTrace();
+			System.out.println(e);
 		}
 		return null;
 	}
+
+	//INSERT
+	public void insertUsuario(Usuario usuario){
+		String insert = "INSERT INTO CLIENTE VALUES("
+						+usuario.getId()+",'"
+						+usuario.getNome()+"','"
+						+usuario.getDescricao()+"','"
+						+usuario.getLocalidade()+"','USUARIO')";
+		execute(insert);
+		insert = "INSERT INTO USUARIO VALUES("
+				+usuario.getId()+",'"
+				+usuario.getLogin().getEmail()+"','"
+				+usuario.getLogin().getSenha()+"')";
+		execute(insert);
+	}
 	
+	public void insertGrupo(Grupo grupo){
+		String insert = "INSERT INTO CLIENTE VALUES("
+				+grupo.getId()+",'"
+				+grupo.getNome()+"','"
+				+grupo.getDescricao()+"','"
+				+grupo.getLocalidade()+"','GRUPO')";
+		execute(insert);
+		
+	}
+
+	public void insertArquivo(Arquivo arquivo, Acesso acesso){
+		String insert = "INSERT INTO ARQUIVO VALUES("
+				+arquivo.getId()+",'"
+				+acesso.getId()+"','"
+				+arquivo.getNome()+"','"
+				+arquivo.getPath()+"')";
+		execute(insert);
+	}
+	
+	public void insertEvento(Evento evento, Acesso acesso){
+		String insert = "INSERT INTO EVENTO VALUES("
+				+evento.getId()+",'"
+				+acesso.getId()+"','"
+				+evento.getNome()+"','"
+				+evento.getDescricao()+"','"
+				+evento.getData()+"','"
+				+evento.getAlerta()+"')";
+		execute(insert);
+	}
+
+	public void insertGrupoUsuario(Grupo grupo, Usuario usuario){
+		String insert = "INSERT INTO GRUPO_USUARIO VALUES("
+				+grupo.getId()+",'"
+				+usuario.getId()+"')";
+		execute(insert);
+	}
+
+	//DELETE
+	public void delUsuario(Usuario usuario){
+		execute("DELETE FROM ARQUIVO WHERE CLI_ID = "+usuario.getId());
+		execute("DELETE FROM EVENTO WHERE CLI_ID = "+usuario.getId());
+		execute("DELETE FROM GRUPO_USUARIO WHERE CLI_ID_USUARIO = "+usuario.getId());
+		execute("DELETE FROM USUARIO WHERE CLI_ID = "+usuario.getId());
+		execute("DELETE FROM CLIENTE WHERE CLI_ID = "+usuario.getId());
+	}
+	
+	public void delGrupo(Grupo grupo){
+		execute("DELETE FROM ARQUIVO WHERE CLI_ID = "+grupo.getId());
+		execute("DELETE FROM EVENTO WHERE CLI_ID = "+grupo.getId());
+		execute("DELETE FROM GRUPO_USUARIO WHERE CLI_ID_USUARIO = "+grupo.getId());
+		execute("DELETE FROM CLIENTE WHERE CLI_ID = "+grupo.getId());
+	}
+	
+	public void delArquivo(Arquivo arquivo){
+		execute("DELETE FROM ARQUIVO WHERE ARQ_ID = "+arquivo.getId());
+	}
+	
+	public void delEvento(Evento evento){
+		execute("DELETE FROM EVENTO WHERE EVE_ID = "+evento.getId());
+	}
+
+	public void delGrupoUsuario(Grupo grupo, Usuario usuario){
+		execute("DELETE FROM GRUPO_USUARIO WHERE CLI_ID_GRUPO = "+grupo.getId()
+				+"AND CLI_ID_USUARIO = "+usuario.getId());
+	}
+
+	//GET
 	public List<Grupo> getGrupos() throws SQLException{
 		List<Grupo> grupos = new ArrayList<Grupo>();
-		String query = "SELECT CLI_ID, CLI_TIPO FROM CLIENTE";
-		ResultSet rs = execute(query);
-		
-		System.out.println(rs);
+		ResultSet result = execute("SELECT * FROM CLIENTE WHERE CLI_TIPO = 'GRUPO'");
 		
 		try {
-			while(!rs.isAfterLast()){
-				System.out.println(rs.getString("CLI_TIPO"));
-				if(rs.getString("CLI_TIPO").equals("GRUPO"))
-					grupos.add(getGrupo(rs.getInt("CLI_ID")));
-				rs.next();
+			while(result.next()){
+				Grupo grupo = new Grupo();
+				grupo.setId(result.getInt("CLI_ID"));
+				grupo.setNome(result.getString("CLI_NOME"));
+				grupo.setDescricao(result.getString("CLI_DESCRICAO"));
+				grupo.setLocalidade(result.getString("CLI_LOCALIDADE"));
+				grupos.add(grupo);
 			}
+			return grupos;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return grupos;
+		return null;
 	}
 	
 	public List<Usuario> getUsuarios() throws SQLException{
 		List<Usuario> usuarios = new ArrayList<Usuario>();
-		String query = "SELECT CLI_ID, CLI_TIPO FROM CLIENTE";
-		ResultSet rs = execute(query);
-		
-		System.out.println(rs);
-		
+		ResultSet result = execute("SELECT * FROM CLIENTE WHERE CLI_TIPO = 'USUARIO'");
+	
 		try {
-			while(!rs.isAfterLast()){
-				System.out.println(rs.getString("CLI_TIPO"));
-				if(rs.getString("CLI_TIPO").equals("USUARIO"))
-					usuarios.add(getUsuario(rs.getInt("CLI_ID")));
-				rs.next();
+			while(result.next()){
+				Usuario usuario = new Usuario();
+				usuario.setId(result.getInt("CLI_ID"));
+				usuario.setNome(result.getString("CLI_NOME"));
+				usuario.setDescricao(result.getString("CLI_DESCRICAO"));
+				usuario.setLocalidade(result.getString("CLI_LOCALIDADE"));
+				ResultSet aux = execute("SELECT * FROM USUARIO WHERE CLI_ID = "+usuario.getId());
+				while(aux.next())
+					usuario.setLogin(new Login(aux.getString("USU_EMAIL"),aux.getString("USU_SENHA")));
+				usuarios.add(usuario);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return usuarios;
-	}
-	
-	public Usuario getUsuario(int id) throws SQLException{
-		System.out.println("getUsuario");
-		String query = "SELECT * FROM CLIENTE WHERE CLI_ID = "+id+";";
-		ResultSet rs = execute(query);
-		
-		Usuario usuario = new Usuario();
-		
-		try {
-			usuario.setId(id);
-			usuario.setNome(rs.getString("CLI_NOME"));
-			usuario.setDescricao(rs.getString("CLI_DESCRICAO"));
-			usuario.setLocalidade(rs.getString("CLI_LOCALIDADE"));
-			usuario.setLogin(getLogin(id));
-			usuario.setAgenda(getAgenda(id));
-			usuario.setInventario(getInventario(id));
-			return usuario;
+			
+			return usuarios;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public Grupo getGrupo(int id) throws SQLException{
-		System.out.println("getGrupo");
-		String query = "SELECT * FROM CLIENTE WHERE CLI_ID = "+id+";";
-		ResultSet rs = execute(query);
-		
-		Grupo grupo = new Grupo();
-		
-		try {
-			grupo.setId(id);
-			grupo.setNome(rs.getString("CLI_NOME"));
-			grupo.setDescricao(rs.getString("CLI_DESCRICAO"));
-			grupo.setLocalidade(rs.getString("CLI_LOCALIDADE"));
-			grupo.setAgenda(getAgenda(id));
-			return grupo;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public Agenda getAgenda(int idCliente) throws SQLException{
-		String query = "SELECT * FROM EVENTO WHERE CLI_ID = "+idCliente+";";
-		ResultSet rs = execute(query);
-		
-		Agenda agenda = new Agenda();
-		
-		try{
-			while(!rs.isAfterLast()){
-				Evento evento = new Evento();
-				evento.setId(rs.getInt("EVE_ID"));
-				evento.setNome(rs.getString("EVE_NOME"));
-				evento.setDescricao(rs.getString("EVE_DESCRICAO"));
-				Calendar c = Calendar.getInstance();
-				c.setTime(rs.getDate("EVE_ALERTA"));
-				evento.setAlerta(c);
-				c.setTime(rs.getDate("EVE_DATA"));
-				evento.setData(c);
-				agenda.addEvento(evento);
-				rs.next();
-			}
-			return agenda;
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
-	public Login getLogin(int id) throws SQLException{
-		String query = "SELECT * FROM USUARIO WHERE ID = "+id+";";
-		ResultSet rs = execute(query);
-		
-		try{
-			return new Login(rs.getString("USR_EMAIL"),rs.getString("USR_SENHA"));	
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public Inventario getInventario(int idCliente) throws SQLException{
-		String query = "SELECT * FROM ARQUIVO WHERE CLI_ID = "+idCliente+";";
-		ResultSet rs = execute(query);
-		
+
+	public Inventario getInventario(Acesso acesso){
 		Inventario inventario = new Inventario();
-		
+		ResultSet result = execute("SELECT * FROM ARQUIVO WHERE CLI_ID = "+acesso.getId());
 		try{
-			while(!rs.isAfterLast()){
+			while(result.next()){
 				Arquivo arquivo = new Arquivo();
-				arquivo.setId(rs.getInt("ARQ_ID"));
-				arquivo.setNome(rs.getString("ARQ_NOME"));
-				arquivo.setPath(rs.getString("ARQ_PATH"));
+				arquivo.setId(result.getInt("ARQ_ID"));
+				arquivo.setNome(result.getString("ARQ_NOME"));
+				arquivo.setPath(result.getString("ARQ_PATH"));
 				inventario.addArquivo(arquivo);
-				rs.next();
 			}
 			return inventario;
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		
 		return null;
 	}
+	
+	public Agenda getAgenda(Acesso acesso){
+		Agenda agenda = new Agenda();
+		Calendar c = Calendar.getInstance();
+		ResultSet result = execute("SELECT * FROM EVENTO WHERE CLI_ID = "+acesso.getId());
+		try{
+			while(result.next()){
+				Evento evento = new Evento();
+				evento.setId(result.getInt("EVE_ID"));
+				evento.setNome(result.getString("EVE_NOME"));
+				c.setTime(result.getDate("EVE_DATA"));
+				evento.setData(c);
+				c.setTime(result.getDate("EVE_ALERTA"));
+				evento.setAlerta(c);
+				agenda.addEvento(evento);
+			}
+			return agenda;
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Integer> getGrupoUsuario(Grupo grupo){
+		ResultSet result = execute("SELECT * FROM GRUPO_USUARIO WHERE CLI_ID_GRUPO ="+grupo.getId());
+		List<Integer> resposta = new ArrayList<Integer>();
+		try{
+			while(result.next()){
+				resposta.add(result.getInt("CLI_ID_USUARIO"));
+			return resposta;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;	
+	}
+
 }
