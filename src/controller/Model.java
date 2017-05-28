@@ -10,9 +10,8 @@ public class Model {
 	private List<Usuario> usuarios;
 	
 	public Model(){
-		this.grupos = new ArrayList<Grupo>();
-		this.usuarios = new ArrayList<Usuario>();
-		
+		grupos = new ArrayList<Grupo>();
+		usuarios = new ArrayList<Usuario>();
 	};
 	
 	public void addGrupo(Grupo grupo){
@@ -34,6 +33,4 @@ public class Model {
 			if(u.getId() == usuario.getId())
 				grupos.remove(u);
 	}
-	
-
 }

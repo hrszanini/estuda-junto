@@ -8,12 +8,16 @@ public class Evento {
 	private String nome;
 	private String descricao;
 	private Calendar data;
-	private Calendar ealerta;
+	private Calendar alerta;
 	
 	public Evento(){}
 	
 	public int getId() {
 		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -40,12 +44,12 @@ public class Evento {
 		this.data = data;
 	}
 
-	public Calendar getEalerta() {
-		return ealerta;
+	public Calendar getAlerta() {
+		return alerta;
 	}
 
-	public void setEalerta(Calendar ealerta) {
-		this.ealerta = ealerta;
+	public void setAlerta(Calendar alerta) {
+		this.alerta = alerta;
 	}
 
 }

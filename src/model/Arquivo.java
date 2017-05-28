@@ -6,6 +6,8 @@ public class Arquivo {
 	private String nome;
 	private String path;
 	
+	public Arquivo(){};
+	
 	public Arquivo(int id,String nome, String path){
 		this.id = id;
 		this.path = path;
@@ -14,6 +16,10 @@ public class Arquivo {
 	
 	public int getId(){
 		return id;
+	}
+	
+	public void setId(int id){
+		this.id = id;
 	}
 
 	public String getNome() {
