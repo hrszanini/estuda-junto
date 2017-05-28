@@ -91,6 +91,28 @@
                                 <a href = "cadastro.html"><button type="link" class="btn btn-success btn-lg">Cadastre-se</button></a>
                             </div>
                     </div>
+
+                    <form name="sentMessage" id="contactForm" novalidate>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label for="e-mail">E-mail</label>
+                                <input type="text" class="form-control" placeholder="e-mail" id="e-mail" required data-validation-required-message="Por favor, insira seu e-mail.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label for="password">Senha</label>
+                                <input type="password" class="form-control" placeholder="password" id="password" required data-validation-required-message="Please enter your password address.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                    
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <button type="submit" class="btn btn-success btn-lg">Send</button>
+                            </div>
+                        </div>
+                    </form>
     </header>
     <!-- Footer -->
     <footer class="text-center">
