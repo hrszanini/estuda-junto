@@ -1,6 +1,6 @@
 package controller;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 import model.*;
@@ -8,10 +8,17 @@ import model.*;
 public class Model {
 	private List<Grupo> grupos;
 	private List<Usuario> usuarios;
+	private DAO dao;
 	
 	public Model(){
-		grupos = new ArrayList<Grupo>();
-		usuarios = new ArrayList<Usuario>();
+        dao = new DAO();
+        dao.connect();
+        try{
+        	this.grupos = dao.getGrupos();
+            this.usuarios = dao.getUsuarios();
+        }catch(SQLException e){
+        	e.printStackTrace();
+        }
 	};
 	
 	public void addGrupo(Grupo grupo){

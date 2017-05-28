@@ -9,6 +9,29 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script type="text/javascript" src="sliding.form.js"></script>
+	<script>
+		$(document).ready(function(){
+				$('contactForm').submit(function(e){
+					e.preventDefault();
+					
+					var email = $('#e-mail').val().trim();
+					var senha = $('#password').val().trim();
+					
+					$.post("/usuario/add", JSON.stringify({
+							'email': email,
+							'senha':senha
+						}),
+						function(data){	
+							if(data[0].status == 1){
+								alert("Foi");
+							}
+							else
+								alert("Erro");
+						},
+						"json");
+				});
+			});
+	</script>
 
     <title>Title</title>
 

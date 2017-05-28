@@ -5,7 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import model.*;
 
@@ -90,27 +92,44 @@ public class DAO {
 		return null;
 	}
 	
-	public Model initializeMode() throws SQLException{
-		Model model = new Model();
+	public List<Grupo> getGrupos() throws SQLException{
+		List<Grupo> grupos = new ArrayList<Grupo>();
 		String query = "SELECT CLI_ID, CLI_TIPO FROM CLIENTE";
 		ResultSet rs = execute(query);
 		
 		System.out.println(rs);
 		
 		try {
-
 			while(!rs.isAfterLast()){
 				System.out.println(rs.getString("CLI_TIPO"));
-				if(rs.getString("CLI_TIPO").equals("USUARIO"))
-					model.addUsuario(getUsuario(rs.getInt("CLI_ID")));
 				if(rs.getString("CLI_TIPO").equals("GRUPO"))
-					model.addGrupo(getGrupo(rs.getInt("CLI_ID")));
+					grupos.add(getGrupo(rs.getInt("CLI_ID")));
 				rs.next();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return model;
+		return grupos;
+	}
+	
+	public List<Usuario> getUsuarios() throws SQLException{
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		String query = "SELECT CLI_ID, CLI_TIPO FROM CLIENTE";
+		ResultSet rs = execute(query);
+		
+		System.out.println(rs);
+		
+		try {
+			while(!rs.isAfterLast()){
+				System.out.println(rs.getString("CLI_TIPO"));
+				if(rs.getString("CLI_TIPO").equals("USUARIO"))
+					usuarios.add(getUsuario(rs.getInt("CLI_ID")));
+				rs.next();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return usuarios;
 	}
 	
 	public Usuario getUsuario(int id) throws SQLException{

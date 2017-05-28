@@ -13,10 +13,6 @@ public class MainServer {
         ProcessBuilder process = new ProcessBuilder();
         Integer port;
         
-        DAO dao = new DAO();
-        dao.connect();
-        model = dao.initializeMode();
-        
         if (process.environment().get("PORT") != null) {
             port = Integer.parseInt(process.environment().get("PORT"));
         } else {
