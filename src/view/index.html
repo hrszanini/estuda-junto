@@ -116,20 +116,12 @@
                         }),
                         function(data){ 
                             if(data[0].status == 1){
-<<<<<<< HEAD
 								//alert('Logado');
 								localStorage.setItem("email", email);
 								window.location.href = 'perfil.html';
 							}else{
 								alert('Usuário/Senha incorreto');
 							}
-=======
-                                //alert('Logado');
-                                window.location.href = 'perfil.html';
-                            }else{
-                                alert('Acesso Negado');
-                            }
->>>>>>> branch 'master' of https://github.com/hrszanini/estuda_junto
                         },
                         "json");
                 });
