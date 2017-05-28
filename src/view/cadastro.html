@@ -37,8 +37,6 @@
 <body id="page-top" class="index">
 <div id="skipnav"><a href="#maincontent">Ir para página</a></div>
 
-
-
     <!-- Header -->
     <header>
        <section id="contact">
@@ -51,7 +49,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <form name="formCadastro" id="formCadastro" novalidate>
+                    <form name="formCadastro" method="post" id="form" novalidate>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="nome">Nome</label>
@@ -62,7 +60,7 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" placeholder="Seu endereço de e-mail" id="email" required data-validation-required-message="Informe-nos seu e-mail, por favor.">
+                                <input type="email" class="form-control" placeholder="Seu endereço de e-mail" id="e-mail" required data-validation-required-message="Informe-nos seu e-mail, por favor.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -76,7 +74,7 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="confirmaSenha">Confirmação da senha</label>
-                                <input type="password" class="form-control" placeholder="Confirme sua senha" id="senha" required data-validation-required-message="Confirme sua senha">
+                                <input type="password" class="form-control" placeholder="Confirme sua senha" id="senhaConf" required data-validation-required-message="Confirme sua senha">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -89,13 +87,13 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="cidade">Cidade</label>
-                                <input type="cidade" class="form-control" placeholder="Cidade (opcional)" id="cidade">
+                                <input type="cidade" class="form-control" placeholder="Cidade (opcional)" id="localidade">
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="bio">Sobre você</label>
-                                <textarea rows="3" class="form-control" placeholder="Faça uma breve descrição sobre você" id="bio" required data-validation-required-message="Escreva um pouquinho sobre você"></textarea>
+                                <textarea rows="3" class="form-control" placeholder="Faça uma breve descrição sobre você" id="descricao" required data-validation-required-message="Escreva um pouquinho sobre você"></textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -106,36 +104,18 @@
                         <fieldset data-role="controlgroup" align="left">
                           <p align = "left">Diga em quais áreas você é bom</p>
                             
-                            <input type="checkbox" name="favcolor" id="portugues" value="portugues">
-                            <label for="red">Português</label><br>
+                            <input type="checkbox" name="favcolor" id="humanas" value="portugues">
+                            <label for="red">Humanas</label><br>
                             
-                            <input type="checkbox" name="favcolor" id="matematica" value="matematica">
-                            <label for="matematica">Matemática</label><br>
+                            <input type="checkbox" name="favcolor" id="exatas" value="matematica">
+                            <label for="matematica">Exatas</label><br>
                             
-                            <input type="checkbox" name="favcolor" id="fisica" value="fisica">
-                            <label for="fisica">Física</label><br>
+                            <input type="checkbox" name="favcolor" id="biologia" value="fisica">
+                            <label for="fisica">Biológicas</label><br>
 
-                            <input type="checkbox" name="favcolor" id="quimica" value="quimica">
-                            <label for="quimica">Quimíca</label><br>
+                            <input type="checkbox" name="favcolor" id="redacao" value="quimica">
+                            <label for="quimica">Redação</label><br>
                             
-                            <input type="checkbox" name="favcolor" id="historia" value="historia">
-                            <label for="historia">História</label><br>
-                            
-                            <input type="checkbox" name="favcolor" id="geografia" value="geografia">
-                            <label for="geografia">Geografia</label><br>
-
-                            <input type="checkbox" name="favcolor" id="biologia" value="biologia">
-                            <label for="biologia">Biologia</label><br>
-                            
-                            <input type="checkbox" name="favcolor" id="ingles" value="ingles">
-                            <label for="ingles">Ingles</label><br>
-                            
-                            <input type="checkbox" name="favcolor" id="espanhol" value="espanhol">
-                            <label for="espanhol">Espanhol</label><br>
-
-                            <input type="checkbox" name="favcolor" id="redacao" value="redacao">
-                            <label for="redacao">Redação</label><br>
-
                         </fieldset>
                       </div>
 
@@ -144,35 +124,17 @@
                         <fieldset data-role="controlgroup" align="left">
                           <p align = "left">Quais áreas você precisa aprender?</p>
                             
-                            <input type="checkbox" name="favcolor" id="lportugues" value="portugues">
-                            <label for="red">Português</label><br>
+                            <input type="checkbox" name="favcolor" id="lhumanas" value="portugues">
+                            <label for="red">Humanas</label><br>
                             
-                            <input type="checkbox" name="favcolor" id="lmatematica" value="matematica">
-                            <label for="matematica">Matemática</label><br>
+                            <input type="checkbox" name="favcolor" id="lexatas" value="matematica">
+                            <label for="matematica">Exatas</label><br>
                             
-                            <input type="checkbox" name="favcolor" id="lfisica" value="fisica">
-                            <label for="fisica">Física</label><br>
+                            <input type="checkbox" name="favcolor" id="lbiologicas" value="fisica">
+                            <label for="fisica">Biológicas</label><br>
 
-                            <input type="checkbox" name="favcolor" id="lquimica" value="quimica">
-                            <label for="quimica">Quimíca</label><br>
-                            
-                            <input type="checkbox" name="favcolor" id="lhistoria" value="historia">
-                            <label for="historia">História</label><br>
-                            
-                            <input type="checkbox" name="favcolor" id="lgeografia" value="geografia">
-                            <label for="geografia">Geografia</label><br>
-
-                            <input type="checkbox" name="favcolor" id="lbiologia" value="biologia">
-                            <label for="biologia">Biologia</label><br>
-                            
-                            <input type="checkbox" name="favcolor" id="lingles" value="ingles">
-                            <label for="ingles">Ingles</label><br>
-                            
-                            <input type="checkbox" name="favcolor" id="lespanhol" value="espanhol">
-                            <label for="espanhol">Espanhol</label><br>
-
-                            <input type="checkbox" name="favcolor" id="lredacao" value="redacao">
-                            <label for="redacao">Redação</label><br>
+                            <input type="checkbox" name="favcolor" id="lredacao" value="quimica">
+                            <label for="quimica">Redação</label><br>
 
                         </fieldset>
                       </div>
@@ -211,6 +173,58 @@
     <script src="js/freelancer.min.js"></script>
     <script type="text/javascript" src="sliding.form.js"></script>
 
+	<!--Get/Post -->
+     <script>
+        $(document).ready(function(){
+                $('form').submit(function(e){
+                    e.preventDefault();
+                    var email = $('#e-mail').val().trim();
+                    var senha = $('#senha').val().trim();
+                    var nome = $('#nome').val().trim();
+					var descricao = $('#descricao').val().trim();
+					var localidade = $('#localidade').val().trim();
+					var vestibular = $('#vestibular').val().trim();
+					
+					var humanas = ($('#humanas').is(':checked'));
+					var exatas = ($('#exatas').is(':checked'));
+					var biologicas = ($('#biologicas').is(':checked'));
+					var redacao = ($('#redacao').is(':checked'));
+					
+					var lhumanas = ($('#lhumanas').is(':checked'));
+					var lexatas = ($('#lexatas').is(':checked'));
+					var lbiologicas = ($('#lbiologicas').is(':checked'));
+					var lredacao = ($('#lredacao').is(':checked'));
+
+                    $.post("/usuario", JSON.stringify({
+                            'email': email,
+                            'senha': senha,
+							'nome': nome,
+							'descricao': descricao,
+							'localidade': localidade,
+							'vestibular': vestibular,
+							
+							'humanas': humanas,
+							'exatas': exatas,
+							'biologicas': biologicas,
+							'redacao': redacao,
+							
+							'lhumanas': lhumanas,
+							'lexatas': lexatas,
+							'lbiologicas': lbiologicas,
+							'lredacao': lredacao
+                        }),
+                        function(data){ 
+                            if(data[0].status == 1){
+								//alert('OK');
+								window.location.href = 'index.html';
+							}else{
+								alert('Fail');
+							}
+                        },
+                        "json");
+                });
+            });
+    </script>
 
 
 

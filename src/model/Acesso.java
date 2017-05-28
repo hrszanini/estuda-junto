@@ -8,7 +8,25 @@ public abstract class Acesso {
 	private String descricao;
 	private Agenda agenda;
 	private String localidade;
+	private Materia ensinar;
+	private Materia aprender;
 	
+	public Materia getEnsinar() {
+		return ensinar;
+	}
+
+	public void setEnsinar(Materia ensinar) {
+		this.ensinar = ensinar;
+	}
+
+	public Materia getAprender() {
+		return aprender;
+	}
+
+	public void setAprender(Materia aprender) {
+		this.aprender = aprender;
+	}
+
 	public Acesso(){}
 
 	public int getId() {

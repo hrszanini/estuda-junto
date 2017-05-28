@@ -13,6 +13,8 @@ public class MainServer {
         ProcessBuilder process = new ProcessBuilder();
         Integer port;
         
+        Rest controller = new Rest(model); 
+        
         if (process.environment().get("PORT") != null) {
             port = Integer.parseInt(process.environment().get("PORT"));
         } else {
@@ -22,9 +24,8 @@ public class MainServer {
         port(port);
 		staticFileLocation("/view");
 		
-		Rest controller = new Rest(model); 
-		
 		controller.addUsuario();
+		controller.login();
     }
 	
 }

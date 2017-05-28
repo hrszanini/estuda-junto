@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 import model.*;
@@ -40,6 +39,7 @@ public class DAO {
 	}
 	
 	public void dropTables() throws SQLException{
+		execute("DROP TABLE MATERIA");
 		execute("DROP TABLE GRUPO_USUARIO");
 		execute("DROP TABLE USUARIO");
 		execute("DROP TABLE ARQUIVO");
@@ -60,6 +60,7 @@ public class DAO {
 				+"CLI_ID NUMBER,"
 				+"USU_EMAIL VARCHAR(255),"
 				+"USU_SENHA VARCHAR(255),"
+				+"USU_VESTIBULAR VARCHAR(255),"
 				+"PRIMARY KEY (CLI_ID),"
 				+"FOREIGN KEY(CLI_ID) REFERENCES CLIENTE(CLI_ID))"
 		);
@@ -87,6 +88,16 @@ public class DAO {
 				+"PRIMARY KEY(CLI_ID_GRUPO,CLI_ID_USUARIO),"
 				+"FOREIGN KEY(CLI_ID_GRUPO) REFERENCES CLIENTE(CLI_ID),"
 				+"FOREIGN KEY(CLI_ID_USUARIO) REFERENCES CLIENTE(CLI_ID))"		
+		);
+		execute("CREATE TABLE MATERIA("
+				+"CLI_ID NUMBER,"
+				+"MAT_FLAG VARCHAR2(10),"
+				+"MAT_HUMANAS NUMBER,"
+				+"MAT_EXATAS NUMBER,"
+				+"MAT_BIOLOGICAS NUMBER,"
+				+"MAT_REDACAO NUMBER,"
+				+"PRIMARY KEY(CLI_ID,MAT_FLAG),"
+				+"FOREIGN KEY(CLI_ID) REFERENCES CLIENTE(CLI_ID))"
 		);
 	}
 	
@@ -160,7 +171,8 @@ public class DAO {
 		insert = "INSERT INTO USUARIO VALUES("
 				+usuario.getId()+",'"
 				+usuario.getLogin().getEmail()+"','"
-				+usuario.getLogin().getSenha()+"')";
+				+usuario.getLogin().getSenha()+"','"
+				+usuario.getVestibular()+"')";
 		execute(insert);
 	}
 	
@@ -201,8 +213,28 @@ public class DAO {
 		execute(insert);
 	}
 
+	public void insertMateriaAprender(Materia materia, Acesso acesso){
+		String insert = "INSERT INTO MATERIA VALUES("
+				+acesso.getId()+",'APRENDER','"
+				+convertToInt(materia.isHumanas())+"','"
+				+convertToInt(materia.isExatas())+"','"
+				+convertToInt(materia.isBiologicas())+"','"
+				+convertToInt(materia.isRedacao())+"')";
+		execute(insert);
+	}
+	
+	public void insertMateriaEnsinar(Materia materia, Acesso acesso){
+		String insert = "INSERT INTO MATERIA VALUES("
+				+acesso.getId()+",'ENSINAR','"
+				+convertToInt(materia.isHumanas())+"','"
+				+convertToInt(materia.isExatas())+"','"
+				+convertToInt(materia.isBiologicas())+"','"
+				+convertToInt(materia.isRedacao())+"')";
+		execute(insert);
+	}
 	//DELETE
 	public void delUsuario(Usuario usuario){
+		execute("DELETE FROM MATERIA WHERE CLI_ID = "+usuario.getId());
 		execute("DELETE FROM ARQUIVO WHERE CLI_ID = "+usuario.getId());
 		execute("DELETE FROM EVENTO WHERE CLI_ID = "+usuario.getId());
 		execute("DELETE FROM GRUPO_USUARIO WHERE CLI_ID_USUARIO = "+usuario.getId());
@@ -211,6 +243,7 @@ public class DAO {
 	}
 	
 	public void delGrupo(Grupo grupo){
+		execute("DELETE FROM MATERIA WHERE CLI_ID = "+grupo.getId());
 		execute("DELETE FROM ARQUIVO WHERE CLI_ID = "+grupo.getId());
 		execute("DELETE FROM EVENTO WHERE CLI_ID = "+grupo.getId());
 		execute("DELETE FROM GRUPO_USUARIO WHERE CLI_ID_USUARIO = "+grupo.getId());
@@ -329,4 +362,52 @@ public class DAO {
 		return null;	
 	}
 
+	public Materia getMateriaApender(Acesso acesso){
+		ResultSet result = execute("SELECT * FROM MATERIA WHERE CLI_ID = "+acesso.getId()
+									+" AND MAT_FLAG = 'APRENDER'");
+		Materia materia = new Materia();
+		try{
+			while(result.next()){
+				materia.setHumanas(convertToBoolean(result.getInt("MAT_HUMANAS")));
+				materia.setExatas(convertToBoolean(result.getInt("MAT_EXATAS")));
+				materia.setBiologicas(convertToBoolean(result.getInt("MAT_BIOLOGICAS")));
+				materia.setRedacao(convertToBoolean(result.getInt("MAT_REDACAO")));
+				return materia;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Materia getMateriaEnsinar(Acesso acesso){
+		ResultSet result = execute("SELECT * FROM MATERIA WHERE CLI_ID = "+acesso.getId()
+		+" AND MAT_FLAG = 'ENSINAR'");
+		Materia materia = new Materia();
+		try{
+			while(result.next()){
+				materia.setHumanas(convertToBoolean(result.getInt("MAT_HUMANAS")));
+				materia.setExatas(convertToBoolean(result.getInt("MAT_EXATAS")));
+				materia.setBiologicas(convertToBoolean(result.getInt("MAT_BIOLOGICAS")));
+				materia.setRedacao(convertToBoolean(result.getInt("MAT_REDACAO")));
+				return materia;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private boolean convertToBoolean(int i){
+		if(i == 1)
+			return true;
+		return false;
+	}
+	
+	
+	private int convertToInt(boolean i){
+		if(i)
+			return 1;
+		return 0;
+	}
 }

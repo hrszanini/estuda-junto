@@ -35,6 +35,11 @@ public class Model {
 	};
 	
 	public void addGrupo(Grupo grupo){
+		int id = 0;
+		for(Grupo g: grupos)
+			if(g.getId() > id)
+				id = g.getId();
+		grupo.setId(++id);
 		grupos.add(grupo);
 		dao.insertGrupo(grupo);
 	}
@@ -48,8 +53,15 @@ public class Model {
 	}
 	
 	public void addUsuario(Usuario usuario){
+		int id = 0;
+		for(Usuario u: usuarios)
+			if(u.getId() > id)
+				id = u.getId();
+		usuario.setId(++id);
 		usuarios.add(usuario);
 		dao.insertUsuario(usuario);
+		dao.insertMateriaAprender(usuario.getAprender(), usuario);
+		dao.insertMateriaEnsinar(usuario.getEnsinar(), usuario);
 	}
 	
 	public void delUsuario(Usuario usuario){
@@ -58,5 +70,12 @@ public class Model {
 				usuarios.remove(usuario);
 				dao.delUsuario(usuario);
 			}	
+	}
+	
+	public boolean login(Login login){
+		for(Usuario u: usuarios)
+			if(u.getLogin().match(login))
+				return true;
+		return false;
 	}
 }
