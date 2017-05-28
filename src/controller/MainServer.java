@@ -1,27 +1,34 @@
 package controller;
 
-import spark.Spark;
+import static spark.Spark.*;
+
+import java.sql.SQLException;
 
 public class MainServer {
 
-	public static void main(String[] args) {
-		Integer port = 4567;		
-		Model model;
-		DAO dao = new DAO();
+	static Model model = new Model();
+
+    public static void main(String[] args) throws SQLException {
+
+        ProcessBuilder process = new ProcessBuilder();
+        Integer port;
+        
+        DAO dao = new DAO();
+        dao.connect();
+        model = dao.initializeMode();
+        
+        if (process.environment().get("PORT") != null) {
+            port = Integer.parseInt(process.environment().get("PORT"));
+        } else {
+            port = 4567;
+        }
+        
+        port(port);
+		staticFileLocation("/view");
 		
-		if(dao.connect()){
-			model = dao.initializeMode();
-		}else{
-			return;
-		}
-		
-		Spark.port(port);
-		Spark.staticFileLocation("/view");
-		
-		Rest controller = new Rest(model);
+		Rest controller = new Rest(model); 
 		
 		controller.addUsuario();
-
-	}
-
+    }
+	
 }

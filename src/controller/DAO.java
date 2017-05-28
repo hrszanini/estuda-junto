@@ -1,6 +1,10 @@
 package controller;
 
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.Calendar;
 
 import model.*;
@@ -30,10 +34,11 @@ public class DAO {
 	public boolean connect(){
 		boolean resp = false;
 		
-		String url = "jbdc:oracle:thin:@"+this.host+":"+port+":xe";
+		String url = "jdbc:oracle:thin:@"+this.host+":"+port+":xe";
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
 			this.c = DriverManager.getConnection(url,this.user,this.password);
+			System.out.println("Conectado");
 			resp = true;
 		}catch(ClassNotFoundException e){
 			System.out.println(e+"\nconnect");
@@ -57,38 +62,45 @@ public class DAO {
 			this.c.close();
 			resp = true;
 		}catch(ClassNotFoundException e){
-			System.out.println(e);
+			e.printStackTrace();
 		}catch(SQLException e){
-			System.out.println(e);
+			e.printStackTrace();
 		}catch(InstantiationException e){
-			System.out.println(e);
+			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return resp;
 	}
 	
-	public ResultSet execute(String query){
-		Statement st;
-		ResultSet rs;
+	public ResultSet execute(String query) throws SQLException{
+		Statement st = null;
+		ResultSet rs = null;
 		
 		try{
 			st = this.c.createStatement();
 			rs = st.executeQuery(query);
 			return rs;
 		}catch(SQLException e){
-			System.out.println(e+"\n execute");
+			e.printStackTrace();
+		}finally{
+			rs.close();
+			st.close();
 		}
 		return null;
 	}
 	
-	public Model initializeMode(){
+	public Model initializeMode() throws SQLException{
 		Model model = new Model();
-		String query = "SELECT CLI_ID, CLI_TIPO FROM CLIENTE;";
+		String query = "SELECT CLI_ID, CLI_TIPO FROM CLIENTE";
 		ResultSet rs = execute(query);
 		
+		System.out.println(rs);
+		
 		try {
+
 			while(!rs.isAfterLast()){
+				System.out.println(rs.getString("CLI_TIPO"));
 				if(rs.getString("CLI_TIPO").equals("USUARIO"))
 					model.addUsuario(getUsuario(rs.getInt("CLI_ID")));
 				if(rs.getString("CLI_TIPO").equals("GRUPO"))
@@ -96,12 +108,13 @@ public class DAO {
 				rs.next();
 			}
 		} catch (SQLException e) {
-			System.out.println(e+"\nInitializeModel");
+			e.printStackTrace();
 		}
 		return model;
 	}
 	
-	public Usuario getUsuario(int id){
+	public Usuario getUsuario(int id) throws SQLException{
+		System.out.println("getUsuario");
 		String query = "SELECT * FROM CLIENTE WHERE CLI_ID = "+id+";";
 		ResultSet rs = execute(query);
 		
@@ -117,12 +130,13 @@ public class DAO {
 			usuario.setInventario(getInventario(id));
 			return usuario;
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public Grupo getGrupo(int id){
+	public Grupo getGrupo(int id) throws SQLException{
+		System.out.println("getGrupo");
 		String query = "SELECT * FROM CLIENTE WHERE CLI_ID = "+id+";";
 		ResultSet rs = execute(query);
 		
@@ -136,12 +150,12 @@ public class DAO {
 			grupo.setAgenda(getAgenda(id));
 			return grupo;
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public Agenda getAgenda(int idCliente){
+	public Agenda getAgenda(int idCliente) throws SQLException{
 		String query = "SELECT * FROM EVENTO WHERE CLI_ID = "+idCliente+";";
 		ResultSet rs = execute(query);
 		
@@ -163,25 +177,25 @@ public class DAO {
 			}
 			return agenda;
 		}catch(SQLException e){
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		
 		return null;
 	}
 	
-	public Login getLogin(int id){
+	public Login getLogin(int id) throws SQLException{
 		String query = "SELECT * FROM USUARIO WHERE ID = "+id+";";
 		ResultSet rs = execute(query);
 		
 		try{
 			return new Login(rs.getString("USR_EMAIL"),rs.getString("USR_SENHA"));	
 		}catch(SQLException e){
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public Inventario getInventario(int idCliente){
+	public Inventario getInventario(int idCliente) throws SQLException{
 		String query = "SELECT * FROM ARQUIVO WHERE CLI_ID = "+idCliente+";";
 		ResultSet rs = execute(query);
 		
@@ -198,7 +212,7 @@ public class DAO {
 			}
 			return inventario;
 		}catch(SQLException e){
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		
 		return null;

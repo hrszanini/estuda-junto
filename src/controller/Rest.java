@@ -16,12 +16,14 @@ public class Rest {
 	}
 	
 	public void addUsuario(){
-		Spark.post("/usuario/add", new Route(){
+		post("/usuario/add", new Route(){
 			@Override
 			public Object handle(Request request, Response response) throws Exception {
 				response.header("Access-Control-Allow-Origin", "*");
 				
 				JSONObject jsonRequest = new JSONObject(request.body());
+				JSONObject jsonResponse = new JSONObject();
+				JSONArray jsonResponseArray = new JSONArray();
 				
 				try{
 					Login login = new Login(jsonRequest.getString("email"),jsonRequest.getString("senha"));
@@ -29,12 +31,16 @@ public class Rest {
 					usuario.setLogin(login);
 					model.addUsuario(usuario);
 					
-					
+					jsonResponse.put("status", 1);
+					jsonResponseArray.put(jsonResponse);
 					
 				}catch(JSONException e){
-					
+					e.printStackTrace();
 				}
-				return null;
+				jsonResponse.put("status", 0);
+				jsonResponseArray.put(jsonResponse);
+     	       
+     	        return jsonResponseArray;
 			}
 		});
 	}

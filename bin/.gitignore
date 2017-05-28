@@ -1,9 +1,5 @@
-/js/
-/less/
-/mail/
-/package.json
-/vendor/
+/view/
 /controller/
 /model/
-/test/
 /ojdbc7.jar
+/test/
