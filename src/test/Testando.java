@@ -14,5 +14,4 @@ public class Testando {
 		dao.resetTables();
 		dao.disconnect();
 	}
-
 }

@@ -109,32 +109,36 @@ public class Rest {
 		});
 	}
 	
-	public void addUsuario2(){
-		get("/usuario/:nome/:senha", new Route() {
+	public void grupos(){
+		get("/grupos/:email", new Route() {
 			@Override
             public Object handle(final Request request, final Response response){
 	        	
 	        	response.header("Access-Control-Allow-Origin", "*");
-	        	
+	        
 				JSONArray jsonResponseArray = new JSONArray();
-				JSONObject jsonResponse = new JSONObject();
 	        	
 	        	try {
-	        		Login login = new Login(request.params(":nome"),request.params(":senha"));
-					Usuario usuario = new Usuario();
-					
-					
-					usuario.setLogin(login);
-					model.addUsuario(usuario);
-            			
-					jsonResponse.put("status", 1);
-					jsonResponseArray.put(jsonResponse);
-	         	   	return jsonResponseArray; 
+	        		Usuario usuario = model.getUsuario(request.params(":email"));
+	        		
+					if(usuario != null){
+						for(Grupo g: model.getGrupos(usuario)){
+							JSONObject jsonResponse = new JSONObject();
+							jsonResponse.put("nome",g.getNome());
+							jsonResponse.put("descricao",g.getDescricao());
+							jsonResponseArray.put(jsonResponse);
+						}
+						JSONObject jsonResponse = new JSONObject();
+						jsonResponse.put("status", 1);
+						jsonResponseArray.put(jsonResponse);
+			    	   	return jsonResponseArray; 
+					}
 	         	   	
         		}catch (JSONException e){
         			e.printStackTrace();
         		}
-    			
+	        	
+	        	JSONObject jsonResponse = new JSONObject();
 	        	jsonResponse.put("status", 0);
 				jsonResponseArray.put(jsonResponse);
 				
@@ -142,6 +146,7 @@ public class Rest {
 	         }
 		});
 	}
+	
 	
 	private String convertJSONString(String str){
 		

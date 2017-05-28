@@ -114,9 +114,10 @@
                         function(data){ 
                             if(data[0].status == 1){
 								//alert('Logado');
+								localStorage.setItem("email", email);
 								window.location.href = 'perfil.html';
 							}else{
-								alert('Acesso Negado');
+								alert('Usuário/Senha incorreto');
 							}
                         },
                         "json");

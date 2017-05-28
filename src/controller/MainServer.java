@@ -18,7 +18,7 @@ public class MainServer {
         if (process.environment().get("PORT") != null) {
             port = Integer.parseInt(process.environment().get("PORT"));
         } else {
-            port = 4567;
+            port = 3389;
         }
         
         port(port);
@@ -26,6 +26,7 @@ public class MainServer {
 		
 		controller.addUsuario();
 		controller.login();
+		controller.grupos();
     }
 	
 }

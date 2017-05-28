@@ -78,4 +78,20 @@ public class Model {
 				return true;
 		return false;
 	}
+	
+	public Usuario getUsuario(String email){
+		for(Usuario u: usuarios)
+			if(u.getLogin().getEmail().equals(email))
+				return u;
+		return null;
+	}
+	
+	public List<Grupo> getGrupos(Usuario usuario){
+		List<Grupo> retorno = new ArrayList<Grupo>();
+		for(Grupo g: grupos){
+			if(g.getUsuarios().contains(usuario))
+				retorno.add(g);
+		}
+		return grupos;
+	}
 }

@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <script type="text/javascript" src="sliding.form.js"></script>
 
     <title>Title</title>
 
@@ -32,7 +31,7 @@
 
 </head>
 
-<body id="page-top" class="index">
+<body id="page-top" class="index" onLoad="inicializar();">
 <div id="skipnav"><a href="#maincontent">Ir para página</a></div>
 
     <!-- Navigation -->
@@ -78,7 +77,7 @@
     <header>
      <!--INÍCIO DA SECTION DO GRUPO-->
      <section class="no-padding" id="portfolio" align="left">
-     <!--BLOCO DE GRUPO-->
+     <!--BLOCO DE GRUPO
         <div class="container-fluid">
             <div class="row no-gutter popup-gallery">
                 <div>
@@ -91,9 +90,10 @@
                         </div>
                         </div>
                     </a>
-                </div><!-- FIM DE UM BLOCO-->
+                </div>
+	FIM DE UM BLOCO-->
 
-
+	</section>
     </header>
 
     <!-- Scroll to Top Button -->
@@ -118,6 +118,19 @@
 
     <!-- Theme JavaScript -->
     <script src="js/freelancer.min.js"></script>
+	
+	<!--Get/Post -->
+     <script>
+	 function inicializar(){
+		var email = localStorage.getItem("email");
+         $.getJSON("/grupos/"+email+"?format=json&jsoncallback=",function(e){
+			$.each(e,function(i,item){
+				console.log(item);
+				document.getElementById("portfolio").innerHTML += '<div class="container-fluid"><div class="row no-gutter popup-gallery"><div><a href="grupo.html" class="portfolio-box"><img src="img/profile.png" class="img-circle" alt="" align="left"> <div align="left" margin="10px"><br><label id=nome>'+item.nome+'</label><br><label id=nome>'+item.descricao+'</label></div></div></div></a></div>';
+			});
+        });
+	}
+    </script>
 
 </body>
 

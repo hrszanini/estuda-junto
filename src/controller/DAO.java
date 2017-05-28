@@ -404,7 +404,6 @@ public class DAO {
 		return false;
 	}
 	
-	
 	private int convertToInt(boolean i){
 		if(i)
 			return 1;
