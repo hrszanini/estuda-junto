@@ -78,39 +78,61 @@
                         <h1 class="name">Estuda junto</h1>
                         <hr class="star-light">
                         <span class="skills">Encontre amigos para estudar junto
-                            <br><h6>Ou <a href="cadastro.html" class="btn-link">cadastre-se</a></h6><h4></span>
+                            <br><h6><a href="#">Cadastrar-se</a> ou <a href="#">Entrar</a></h6><h4></span>
                         <span class = "form">
                             <div class="col-lg-8 col-lg-offset-2">
-                            
+                 
                     <form name="sentMessage" id="contactForm" novalidate>
                         <div class="row control-group">
-                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" placeholder="e-mail" id="email" required data-validation-required-message="Por favor, insira seu e-mail.">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                        </div>
-                        <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="senha">Nome</label>
-                                <input type="password" class="form-control" placeholder="senha" id="senha" required data-validation-required-message="Por favor, insira sua senha.">
+                                <label for="name">Nome</label>
+                                <input type="text" class="form-control" placeholder="Nome" id="name" required data-validation-required-message="Por favor, insira seu nome.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
-                        <!--
+                        
                         <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" placeholder="Email" id="email" required data-validation-required-message="Por favor, insira seu nome.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label for="senha">Senha</label>
+                                <input type="password" class="form-control" placeholder="Senha" id="senha" required data-validation-required-message="Por favor, insira sua senha.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label for="confirmasenha">Confirme a senha</label>
+                                <input type="password" class="form-control" placeholder="Confirme sua senha" id="confirmasenha" required data-validation-required-message="Por favor, repita sua senha.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        vestibular, cidade
+                        /usuario/add/:email/:senha
+                        <div class="row control-group">
+                         <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label for="confirmasenha">Vestibular</label>
+                                <input type="string" class="form-control" placeholder="Qual vestibular você quer prestar?" id="vestibular" required data-validation-required-message="Por favor, repita sua senha.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label for="message">Bio</label>
                                 <textarea rows="2" class="form-control" placeholder="Se descreva em curtas palavras" id="bio" required data-validation-required-message="Faça uma breve descrição."></textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
-                        -->
                         <br>
                         <div id="success"></div>
                         <div class="row">
                             <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Entrar</button>
+                                <button type="submit" class="btn btn-success btn-lg">Tá bom</button>
                             </div>
                         </div>
                     </form>
