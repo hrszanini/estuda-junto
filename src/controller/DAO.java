@@ -36,13 +36,13 @@ public class DAO {
 			this.c = DriverManager.getConnection(url,this.user,this.password);
 			resp = true;
 		}catch(ClassNotFoundException e){
-			System.out.println(e);
+			System.out.println(e+"\nconnect");
 		}catch(SQLException e){
-			System.out.println(e);
+			System.out.println(e+"\nconnect");
 		}catch(InstantiationException e){
-			System.out.println(e);
+			System.out.println(e+"\nconnect");
 		} catch (IllegalAccessException e) {
-			System.out.println(e);
+			System.out.println(e+"\nconnect");
 		}
 		return resp;
 	}
@@ -77,7 +77,7 @@ public class DAO {
 			rs = st.executeQuery(query);
 			return rs;
 		}catch(SQLException e){
-			System.out.println(e);
+			System.out.println(e+"\n execute");
 		}
 		return null;
 	}
@@ -96,7 +96,7 @@ public class DAO {
 				rs.next();
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			System.out.println(e+"\nInitializeModel");
 		}
 		return model;
 	}

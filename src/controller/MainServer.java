@@ -1,20 +1,18 @@
 package controller;
+
 import spark.Spark;
 
-public class Server {
-	
-	static Model model;
-	
-	private static void main(String[] args){
-		
-		ProcessBuilder process = new ProcessBuilder();
+public class MainServer {
+
+	public static void main(String[] args) {
 		Integer port = 4567;		
-		
+		Model model;
 		DAO dao = new DAO();
+		
 		if(dao.connect()){
 			model = dao.initializeMode();
 		}else{
-			System.out.println("Erro de conexão ao banco");
+			return;
 		}
 		
 		Spark.port(port);
@@ -23,6 +21,7 @@ public class Server {
 		Rest controller = new Rest(model);
 		
 		controller.addUsuario();
-		
+
 	}
+
 }
