@@ -66,14 +66,17 @@
                                 <button type="submit" class="btn btn-success btn-lg">Conectar-se</button>
                             </div>
                         </div>
-                    </form>
-                </div>
 
-                    <div class = "container">
+                       
                     <div class="form-group col-xs-12">
                         <a href = "cadastro.html"><h6>Cadastre-se</h6></a>
                     </div>
-                    </div>
+          
+
+                    </form>
+                </div>
+
+                    
 
     </header>
 
@@ -99,7 +102,7 @@
     <!-- Theme JavaScript -->
     <script src="js/freelancer.min.js"></script>
     
-	    <!--Get/Post -->
+        <!--Get/Post -->
      <script>
         $(document).ready(function(){
                 $('form').submit(function(e){
@@ -113,12 +116,20 @@
                         }),
                         function(data){ 
                             if(data[0].status == 1){
+<<<<<<< HEAD
 								//alert('Logado');
 								localStorage.setItem("email", email);
 								window.location.href = 'perfil.html';
 							}else{
 								alert('Usuário/Senha incorreto');
 							}
+=======
+                                //alert('Logado');
+                                window.location.href = 'perfil.html';
+                            }else{
+                                alert('Acesso Negado');
+                            }
+>>>>>>> branch 'master' of https://github.com/hrszanini/estuda_junto
                         },
                         "json");
                 });
